@@ -92,8 +92,10 @@ class BinarySearchTree(Generic[K, I]):
             current = TreeNode(key, item=item)
             self.length += 1
         elif key < current.key:
+            current.subtree_size+=1
             current.left = self.insert_aux(current.left, key, item)
         elif key > current.key:
+            current.subtree_size+=1
             current.right = self.insert_aux(current.right, key, item)
         else:  # key == current.key
             raise ValueError('Inserting duplicate item')
@@ -130,7 +132,7 @@ class BinarySearchTree(Generic[K, I]):
             current.key  = succ.key
             current.item = succ.item
             current.right = self.delete_aux(current.right, succ.key)
-
+        current.subtree_size -= 1
         return current
 
     def get_successor(self, current: TreeNode) -> TreeNode:
@@ -139,14 +141,19 @@ class BinarySearchTree(Generic[K, I]):
             It should be a child node having the smallest key among all the
             larger keys.
         """
-        raise NotImplementedError()
+        if current.right is None:
+            return None    
+        return self.get_minimal(current.right)
 
     def get_minimal(self, current: TreeNode) -> TreeNode:
         """
             Get a node having the smallest key in the current sub-tree.
         """
-        raise NotImplementedError()
 
+        if current.left is not None:
+            return self.get_minimal(current.left)
+        return current
+        
     def is_leaf(self, current: TreeNode) -> bool:
         """ Simple check whether or not the node is a leaf. """
 
@@ -176,4 +183,17 @@ class BinarySearchTree(Generic[K, I]):
         """
         Finds the kth smallest value by key in the subtree rooted at current.
         """
-        raise NotImplementedError()
+        self.values = []
+        self._kth_smallest_aux(k, current, self.values)
+        return self.values[k-1] if len(self.values) >= k else None
+
+    def _kth_smallest_aux(self, k: int, current: TreeNode, values: list[TreeNode]) -> None:
+        """
+        aux function for kth_smallest
+        """
+        if current is not None and not len(values)>=k:
+            self._kth_smallest_aux(k, current.left, values)
+            self.values.append(current)
+            self._kth_smallest_aux(k, current.right, values)
+
+
