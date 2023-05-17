@@ -1,6 +1,6 @@
 from __future__ import annotations
 from typing import Generic, TypeVar
-from math import ceil
+from math import ceil,floor
 from bst import BinarySearchTree
 from node import TreeNode
 
@@ -21,7 +21,7 @@ class Percentiles(Generic[T]):
     
     def ratio(self, x, y) -> list[T]:
         bottom = self.store.kth_smallest(ceil((x/100) * self.store.length+1),self.store.root)
-        top = self.store.kth_smallest(ceil(self.store.length - (self.store.length * (y/100))),self.store.root)
+        top = self.store.kth_smallest(floor(self.store.length - (self.store.length * (y/100))),self.store.root)
         values = []
 
         def ratio_aux(current: TreeNode):
