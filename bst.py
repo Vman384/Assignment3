@@ -183,30 +183,21 @@ class BinarySearchTree(Generic[K, I]):
         """
         Finds the kth smallest value by key in the subtree rooted at current.
         """
-        self.values = []
-        self._kth_smallest_aux(k, current)
-        return self.values[k-1] if len(self.values) >= k else None
+        # Check if current is None or k is out of bounds
+        if current is None or k < 1 or k > current.subtree_size:
+            return None
 
-    def _kth_smallest_aux(self, k: int, current: TreeNode) -> None:
-        """
-        aux function for kth_smallest
-        """
-        if current is not None and not len(self.values)>=k:
-            self._kth_smallest_aux(k, current.left)
-            self.values.append(current)
-            self._kth_smallest_aux(k, current.right)
+        # Compute the size of the left subtree
+        left_size = current.left.subtree_size if current.left else 0
+
+        if k <= left_size:  # kth smallest is in left subtree
+            return self.kth_smallest(k, current.left)
+        elif k == left_size + 1:  # current is the kth smallest
+            return current
+        else:  # kth smallest is in right subtree
+            return self.kth_smallest(k - left_size - 1, current.right)
     
-    def get_child_nodes(self, current: TreeNode):
-        self.children = []
-        self.get_child_nodes_aux(current)
-        return self.children
 
-    def get_child_nodes_aux(self, current:TreeNode):
-        if current is not None:
-            self.get_child_nodes_aux(current.left)
-            self.children.append(current)
-            self.get_child_nodes_aux(current.right)
-        
         
 
 
