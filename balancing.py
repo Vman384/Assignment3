@@ -56,8 +56,8 @@ def make_ordering(my_coordinate_list: list[Point]) -> list[Point]:
         score = []
         number_of_points=3
         for i in range(number_of_points):
-            left = [] * number_of_points
-            right = [] * number_of_points
+            left = [0] * number_of_points
+            right = [0] * number_of_points
             for j in range(number_of_points):
                 if i==j:
                     continue
