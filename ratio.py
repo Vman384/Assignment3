@@ -57,8 +57,7 @@ class Percentiles(Generic[T]):
                     the best case time complexity will be O(1) for each, resulting in an overall best case complexity of O(1).
         
         Worst case : If both kth_smallest calls traverse the entire tree and ratio_aux also visits every node in the tree, the 
-                     worst case time complexity will be O(n) for each, resulting in an overall worst case complexity of O(3n) 
-                     which simplifies to O(n) as we generally ignore constants in Big O notation.
+                     worst case time complexity will be O(n) for each, resulting in an overall worst case complexity of O(3n) which simplifies to O(n) as we generally ignore constants in Big O notation.
         
         """
         bottom = self.store.kth_smallest(ceil((x/100) * self.store.length+1),self.store.root)
@@ -66,6 +65,19 @@ class Percentiles(Generic[T]):
         values = []
 
         def ratio_aux(current: TreeNode):
+            """
+            Complexity :
+
+            Best case : The best-case scenario for ratio_aux function is when the tree is perfectly balanced, the root node 
+                        falls between the range bottom.key and top.key, and there is no need to make recursive calls to the left 
+                        and right children of the root node. In this case, the time complexity of the function would be constant 
+                        i.e., O(1).
+            
+            Worst case : The worst-case scenario for the ratio_aux function is when the tree is heavily skewed either to the left or 
+                         right (essentially becoming a linked list), or when all nodes fall in the range defined by bottom.key and top.key, 
+                         requiring to visit every node in the tree. The function makes recursive calls to left and right children of the current node, so in the worst-case scenario, it would visit all nodes in the tree. If there are n nodes in the tree, the time complexity of the function would be linear i.e., O(n).
+            
+            """
             if current is not None:
                 if bottom.key <= current.key <= top.key:
                     values.append(current.key)
