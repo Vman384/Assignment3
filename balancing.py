@@ -66,7 +66,7 @@ def make_ordering(my_coordinate_list: list[Point]) -> list[Point]:
                 else:
                     right[i]+=1
             final_score = []
-            for w in range(number_of_points):
+            for _ in range(number_of_points):
                 if min(left[i] , right[i]) > 17:
                     final_score.append(min(left[i] , right[i]) / max(left[i] , right[i]))
                 if not final_score:

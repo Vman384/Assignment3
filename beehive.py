@@ -12,6 +12,8 @@ class Beehive:
     capacity: int
     nutrient_factor: int
     volume: int = 0
+
+    
     def product(self):
         if (self.volume or self.capacity or self.nutrient_factor) == 0:
             return 0
@@ -56,14 +58,41 @@ class BeehiveSelector:
         self.beehives = MaxHeap(max_beehives)
 
     def set_all_beehives(self, hive_list: list[Beehive]):
+        """
+        Complexity :
+
+        Best case  = Worst case : O(n log n) - This is when the add operation always results in a rise to the root of the MaxHeap 
+                    (thus maximizing the number of operations).
+        
+        """
+
         self.beehives = MaxHeap(len(self.beehives.the_array)) #python will clear the memory of the old one later
         for i in len(hive_list):
             self.beehives.add(i)
     
     def add_beehive(self, hive: Beehive):
+        """
+        Complexity :
+
+        Best case  =  Worst case : O(log n) - This is when the add operation results in a rise to the root of the MaxHeap 
+                                    (thus maximizing the number of operations).
+        
+        """
         self.beehives.add(hive)
     
-    def harvest_best_beehive(self) -> int:        
+    def harvest_best_beehive(self) -> int:   
+        """
+        Complexity :
+
+        Best case : O(log n) - This is when the get_max and add operations execute as efficiently as possible, 
+                    meaning they don't have to perform the maximum number of possible comparisons and swaps. This 
+                    happens when the heap property is maintained with minimal adjustments.
+        
+        Worst case : O(log n) - This is when the get_max and add operations have to perform the maximum number of comparisons 
+                     and swaps. This happens when the heap property requires the most adjustments, such as when the element that 
+                     is removed is the root and when the element that is added rises all the way to the root.
+        
+        """     
         current_max = self.beehives.get_max()
         if current_max.volume >=  current_max.capacity:
             emeralds = current_max.nutrient_factor * current_max.capacity
